@@ -37,6 +37,8 @@ import createPolicies from '@redhat-cloud-services/rbac-client/dist/CreatePolici
 import updatePolicy from '@redhat-cloud-services/rbac-client/dist/UpdatePolicy';
 import deletePolicy from '@redhat-cloud-services/rbac-client/dist/DeletePolicy';
 
+import listWorkspaces from '@redhat-cloud-services/rbac-client/dist/v2/WorkspacesList';
+
 import getPrincipalAccess from '@redhat-cloud-services/rbac-client/dist/GetPrincipalAccess';
 import listPermissions from '@redhat-cloud-services/rbac-client/dist/ListPermissions';
 import listPermissionOptions from '@redhat-cloud-services/rbac-client/dist/ListPermissionOptions';
@@ -67,6 +69,14 @@ axiosInstance.interceptors.response.use(null, interceptor401);
 axiosInstance.interceptors.response.use(null, interceptor403);
 axiosInstance.interceptors.response.use(null, interceptor500);
 axiosInstance.interceptors.response.use(null, errorInterceptor);
+
+const workspacesApi = new APIFactory(
+  RBAC_API_BASE,
+  {
+    listWorkspaces,
+  },
+  { axios: axiosInstance }
+);
 
 const principalApi = new APIFactory(
   RBAC_API_BASE,
@@ -138,6 +148,10 @@ const permissionApi = new APIFactory(
 const costApi = new BaseAPI(undefined, COST_API_BASE, axiosInstance);
 const inventoryResourceTypesApi = new ResourceTypesApi(undefined, INVENTORY_API_BASE, axiosInstance);
 const inventoryGroupsApi = new GroupsApi(undefined, INVENTORY_API_BASE, axiosInstance);
+
+export function getWorkspacesApi() {
+  return workspacesApi;
+}
 
 export function getPrincipalApi() {
   return principalApi;
